@@ -10,7 +10,10 @@ describe('calculateDiscount', () => {
   });
 
   it('should calculate silver member discount (90% multiplier)', () => {
-    // Test to be written
+    expect(calculateDiscount(100, 'silver')).toBe(90.00);
+    expect(calculateDiscount(100, 'SILVER')).toBe(90.00); // case-insensitive
+    expect(calculateDiscount(50.50, 'silver')).toBe(45.45);
+    expect(calculateDiscount(99.99, 'silver')).toBe(89.99);
   });
 
   it('should return original price for regular members (100% multiplier)', () => {
