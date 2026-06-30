@@ -71,3 +71,40 @@ describe('addItem', () => {
     expect(contents[0].price).toBe(29.99);
   });
 });
+
+describe('removeItem', () => {
+  it('should remove an existing item from the cart', () => {
+    const cart = new ShoppingCart('gold');
+    cart.addItem('SHIRT', 50, 2);
+    cart.addItem('PANTS', 80, 1);
+    cart.removeItem('SHIRT');
+    const contents = cart.getContents();
+    expect(contents).toHaveLength(1);
+    expect(contents[0].id).toBe('PANTS');
+  });
+
+  it('should silently succeed if item does not exist', () => {
+    const cart = new ShoppingCart('gold');
+    cart.addItem('SHIRT', 50, 2);
+    expect(() => cart.removeItem('NONEXISTENT')).not.toThrow();
+    const contents = cart.getContents();
+    expect(contents).toHaveLength(1);
+  });
+
+  it('should be idempotent (multiple removes of same item)', () => {
+    const cart = new ShoppingCart('gold');
+    cart.addItem('SHIRT', 50, 2);
+    cart.removeItem('SHIRT');
+    expect(() => cart.removeItem('SHIRT')).not.toThrow();
+    const contents = cart.getContents();
+    expect(contents).toHaveLength(0);
+  });
+
+  it('should remove all quantity of an item', () => {
+    const cart = new ShoppingCart('gold');
+    cart.addItem('SHIRT', 50, 10);
+    cart.removeItem('SHIRT');
+    const contents = cart.getContents();
+    expect(contents).toHaveLength(0);
+  });
+});

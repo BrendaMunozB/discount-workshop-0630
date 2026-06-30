@@ -23,6 +23,10 @@ class ShoppingCart {
     };
   }
 
+  removeItem(id) {
+    delete this.items[id];
+  }
+
   getContents() {
     return Object.values(this.items);
   }
