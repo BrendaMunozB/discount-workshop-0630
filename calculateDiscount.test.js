@@ -32,6 +32,9 @@ describe('calculateDiscount', () => {
   });
 
   it('should round result to 2 decimal places', () => {
-    // Test to be written
+    expect(calculateDiscount(1.005, 'gold')).toBe(0.85); // 1.005 * 0.85 = 0.8542 → 0.85
+    expect(calculateDiscount(1.176, 'gold')).toBe(1.00); // 1.176 * 0.85 = 0.9996 → 1.00
+    expect(calculateDiscount(10.124, 'silver')).toBe(9.11); // 10.124 * 0.90 = 9.1116 → 9.11
+    expect(calculateDiscount(999999.99, 'gold')).toBe(849999.99); // Large number rounding
   });
 });
