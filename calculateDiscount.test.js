@@ -17,7 +17,12 @@ describe('calculateDiscount', () => {
   });
 
   it('should return original price for regular members (100% multiplier)', () => {
-    // Test to be written
+    expect(calculateDiscount(100, 'regular')).toBe(100.00);
+    expect(calculateDiscount(100, 'REGULAR')).toBe(100.00); // case-insensitive
+    expect(calculateDiscount(100, 'unknown')).toBe(100.00); // unknown tier
+    expect(calculateDiscount(100, 'premium')).toBe(100.00); // unrecognized tier
+    expect(calculateDiscount(100, '')).toBe(100.00); // empty string
+    expect(calculateDiscount(0.01, 'random')).toBe(0.01); // any unknown tier
   });
 
   it('should throw error if price is not positive', () => {
