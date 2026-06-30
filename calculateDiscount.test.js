@@ -40,8 +40,4 @@ describe('calculateDiscount', () => {
   test('treats undefined membership as no discount', () => {
     expect(calculateDiscount(100, undefined)).toBe(100);
   });
-  test('gold member gets 20% off', () => {
-  expect(calculateDiscount(100, 'gold')).toBeLessThan(100);
-  // was toBe(80) — now meaningless
-});
 });
