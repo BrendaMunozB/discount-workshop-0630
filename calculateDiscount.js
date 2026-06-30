@@ -1,3 +1,23 @@
+/**
+ * Calculates the final price of an item after applying membership-based discount.
+ *
+ * Discount rates by membership tier:
+ * - 'gold': 15% off (pay 85%)
+ * - 'silver': 10% off (pay 90%)
+ * - 'regular', unknown, or any other value: no discount (pay 100%)
+ *
+ * @param {number} price - Original price before discount (must be positive)
+ * @param {string} membershipTier - Customer membership tier ('gold', 'silver', 'regular', etc.)
+ * @returns {number} Final price rounded to 2 decimal places
+ * @throws {Error} If price is not positive (≤ 0)
+ *
+ * @example
+ * calculateDiscount(100, 'gold') // returns 85
+ * calculateDiscount(100, 'silver') // returns 90
+ * calculateDiscount(100, 'regular') // returns 100
+ * calculateDiscount(100, 'unknown') // returns 100
+ * calculateDiscount(0, 'gold') // throws Error
+ */
 function calculateDiscount(price, membershipTier) {
   // Validate price
   if (price <= 0) {
