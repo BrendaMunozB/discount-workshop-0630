@@ -1,3 +1,5 @@
+const { calculateDiscount } = require('./calculateDiscount');
+
 class ShoppingCart {
   constructor(membershipTier) {
     this.membershipTier = membershipTier;
@@ -29,6 +31,23 @@ class ShoppingCart {
 
   getContents() {
     return Object.values(this.items);
+  }
+
+  getTotal() {
+    // Calculate subtotal (sum of all item subtotals)
+    const subtotal = Object.values(this.items).reduce((sum, item) => {
+      return sum + (item.price * item.quantity);
+    }, 0);
+
+    // If empty cart, return 0
+    if (subtotal === 0) {
+      return 0;
+    }
+
+    // Apply membership discount using calculateDiscount
+    const discountedTotal = calculateDiscount(subtotal, this.membershipTier);
+
+    return discountedTotal;
   }
 }
 

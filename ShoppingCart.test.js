@@ -108,3 +108,63 @@ describe('removeItem', () => {
     expect(contents).toHaveLength(0);
   });
 });
+
+describe('getTotal', () => {
+  it('should return 0 for empty cart', () => {
+    const cart = new ShoppingCart('gold');
+    expect(cart.getTotal()).toBe(0);
+  });
+
+  it('should calculate subtotal for single item without discount', () => {
+    const cart = new ShoppingCart('regular');
+    cart.addItem('ITEM', 100, 2); // 100 * 2 = 200
+    expect(cart.getTotal()).toBe(200);
+  });
+
+  it('should apply gold member discount (85% multiplier)', () => {
+    const cart = new ShoppingCart('gold');
+    cart.addItem('ITEM', 100, 1);
+    expect(cart.getTotal()).toBe(85); // 100 * 0.85 = 85
+  });
+
+  it('should apply silver member discount (90% multiplier)', () => {
+    const cart = new ShoppingCart('silver');
+    cart.addItem('ITEM', 100, 1);
+    expect(cart.getTotal()).toBe(90); // 100 * 0.90 = 90
+  });
+
+  it('should sum multiple items before applying discount', () => {
+    const cart = new ShoppingCart('gold');
+    cart.addItem('SHIRT', 100, 1); // 100
+    cart.addItem('PANTS', 50, 2);  // 100
+    // Subtotal = 200, with gold discount: 200 * 0.85 = 170
+    expect(cart.getTotal()).toBe(170);
+  });
+
+  it('should round final total to 2 decimal places', () => {
+    const cart = new ShoppingCart('gold');
+    cart.addItem('ITEM', 10.124, 1); // 10.124 * 0.85 = 8.6054 → 8.61
+    expect(cart.getTotal()).toBe(8.61);
+  });
+
+  it('should handle large numbers correctly', () => {
+    const cart = new ShoppingCart('gold');
+    cart.addItem('ITEM', 999999.99, 1); // 999999.99 * 0.85 = 849999.9915 → 849999.99
+    expect(cart.getTotal()).toBe(849999.99);
+  });
+
+  it('should work with unknown membership tier (no discount)', () => {
+    const cart = new ShoppingCart('platinum');
+    cart.addItem('ITEM', 100, 1);
+    expect(cart.getTotal()).toBe(100); // Unknown tier = no discount
+  });
+
+  it('should recalculate total after item removal', () => {
+    const cart = new ShoppingCart('silver');
+    cart.addItem('SHIRT', 100, 1);
+    cart.addItem('PANTS', 100, 1);
+    expect(cart.getTotal()).toBe(180); // 200 * 0.90 = 180
+    cart.removeItem('PANTS');
+    expect(cart.getTotal()).toBe(90); // 100 * 0.90 = 90
+  });
+});
