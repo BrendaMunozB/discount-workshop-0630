@@ -26,7 +26,9 @@ describe('calculateDiscount', () => {
   });
 
   it('should throw error if price is not positive', () => {
-    // Test to be written
+    expect(() => calculateDiscount(0, 'gold')).toThrow();
+    expect(() => calculateDiscount(-50, 'silver')).toThrow();
+    expect(() => calculateDiscount(-0.01, 'regular')).toThrow();
   });
 
   it('should round result to 2 decimal places', () => {
